@@ -4,36 +4,38 @@ using UnityEngine;
 
 public class CatController : MonoBehaviour
 {
-    public int timer = 0;
-    public float speed = 0.5f;
+    public Animator animator;
+
+    private float h;
+    private float v;
+
+    private float moveX;
+    private float moveY;
+    private float speedH = 50f;
+    private float speedV = 80f;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Initialize");
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
         // The key movement of the cat character
-        if (Input.GetKey(KeyCode.RightArrow))
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            this.transform.Translate(speed * Time.deltaTime, 0, 0);
+
+            animator.Play("Run", -1, 0);
+
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            this.transform.Translate(-speed * Time.deltaTime, 0,0);
-        }
-        else if (Input.GetKey(KeyCode.UpArrow))
-        {
-            this.transform.Translate(0, 0, speed * Time.deltaTime);
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            this.transform.Translate(0, 0, -speed * Time.deltaTime);
-        }
-        timer = timer + 1;
-        Debug.Log(timer + "th Updating");
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxis("Vertical");
+
+        animator.SetFloat("h", h);
+        animator.SetFloat("v", v);
+
     }
 }
