@@ -6,6 +6,11 @@ public class CatController : MonoBehaviour
 {
     public Animator animator;
     public Rigidbody rigidbody;
+    public float movePower = 1f;
+    public float jumpPower = 1f;
+
+    Vector3 movement;
+    bool isJumping = false; 
 
     private float h;
     private float v;
@@ -29,12 +34,13 @@ public class CatController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            animator.transform.Translate(0, 0, speedH * Time.deltaTime);
+            isJumping = true;
             animator.Play("Run", -1, 0);
-
         }
+
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
+
 
         animator.SetFloat("h", h);
         animator.SetFloat("v", v);
@@ -85,4 +91,23 @@ public class CatController : MonoBehaviour
             Debug.Log("Collision Detected");
         }
     }
+
+
+void FixedUpdate()
+{
+    Jump();
+}
+
+void Jump()
+{
+    if (!isJumping)
+        return;
+
+
+        rigidbody.velocity = Vector3.zero;
+    Vector3 jumpVelocity = new Vector3(0, jumpPower);
+    rigidbody.AddForce(jumpVelocity, ForceMode.Impulse);
+
+    isJumping = false;
+}
 }
